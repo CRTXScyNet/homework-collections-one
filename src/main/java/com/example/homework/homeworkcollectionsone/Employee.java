@@ -6,24 +6,26 @@ public class Employee {
 
 
     private String firstName;
-
     private String lastName;
-
+    private String fullName;
 
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        fullName = firstName + " " + lastName;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-
     public String getLastName() {
         return lastName;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
 
     @Override
     public boolean equals(Object o) {

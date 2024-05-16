@@ -6,15 +6,17 @@ import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundEx
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private ArrayList<Employee> employees;
+
+    Map<String, Employee> employees;
     private final int maxEmployeeAmount;
 
     public EmployeeServiceImpl() {
-        this.employees = new ArrayList<>();
+        this.employees = new HashMap<>();
         this.maxEmployeeAmount = 15;
     }
 
@@ -23,16 +25,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
-        boolean employeeAlreadyExist = employees.stream().anyMatch(e -> e.getFirstName().equalsIgnoreCase(firstName)
-                && e.getLastName().equalsIgnoreCase(lastName));
+
+        Employee employee = new Employee(firstName, lastName);
+        boolean employeeAlreadyExist = employees.containsKey(employee.getFullName());
         if (employeeAlreadyExist) {
             throw new EmployeeAlreadyAddedException();
         }
         if (employees.size() >= maxEmployeeAmount) {
             throw new EmployeeStorageIsFullException();
         }
-        Employee employee = new Employee(firstName, lastName);
-        employees.add(employee);
+
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
@@ -41,14 +44,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
-        boolean employeeExist = employees.stream().anyMatch(e -> e.getFirstName().equalsIgnoreCase(firstName)
-                && e.getLastName().equalsIgnoreCase(lastName));
+        String fullName = firstName + " " + lastName;
+        boolean employeeExist = employees.containsKey(firstName + " " + lastName);
         if (!employeeExist) {
             throw new EmployeeNotFoundException();
         }
-        Employee employee = employees.stream().filter(e -> e.getFirstName().equalsIgnoreCase(firstName)
-                && e.getLastName().equalsIgnoreCase(lastName)).toList().get(0);
-        employees.remove(employee);
+        Employee employee = employees.get(fullName);
+        employees.remove(fullName);
         return employee;
     }
 
@@ -57,17 +59,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
-        boolean employeeExist = employees.stream().anyMatch(e -> e.getFirstName().equalsIgnoreCase(firstName)
-                && e.getLastName().equalsIgnoreCase(lastName));
-        if (!employeeExist) {
+        String fullName = firstName + " " + lastName;
+        Employee employeeExist = employees.get(fullName);
+        if (employeeExist == null) {
             throw new EmployeeNotFoundException();
         }
-        return employees.stream().filter(e -> e.getFirstName().equalsIgnoreCase(firstName)
-                && e.getLastName().equalsIgnoreCase(lastName)).toList().get(0);
+        return employeeExist;
     }
 
     @Override
-    public ArrayList<Employee> getEmployeeList() {
+    public Map getEmployeeList() {
         return employees;
     }
 

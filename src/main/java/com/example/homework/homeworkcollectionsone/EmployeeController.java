@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/employee")
@@ -37,7 +38,7 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/all")
-    ArrayList<Employee> getEmployeeList() {
+    Map getEmployeeList() {
         return employeeService.getEmployeeList();
     }
 }
