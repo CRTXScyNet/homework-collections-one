@@ -1,4 +1,4 @@
-package com.example.homework.homeworkcollectionsone;
+package com.example.homework.homeworkcollectionsone.employees;
 
 import com.example.homework.homeworkcollectionsone.exceptions.AbsentVariableException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeAlreadyAddedException;
@@ -18,6 +18,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl() {
         this.employees = new HashMap<>();
         this.maxEmployeeAmount = 15;
+        for (int i = 0; i < maxEmployeeAmount; i++) {
+            Employee employee = Employee.createEmployee();
+            employees.put(employee.getFullName(),employee);
+        }
     }
 
     @Override
@@ -68,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Map getEmployeeList() {
+    public Map<String,Employee> getEmployeeList() {
         return employees;
     }
 

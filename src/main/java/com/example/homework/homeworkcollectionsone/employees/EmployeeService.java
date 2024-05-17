@@ -1,6 +1,5 @@
-package com.example.homework.homeworkcollectionsone;
+package com.example.homework.homeworkcollectionsone.employees;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public interface EmployeeService {
