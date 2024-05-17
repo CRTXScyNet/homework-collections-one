@@ -11,29 +11,23 @@ import java.util.Collection;
 @RequestMapping(path = "/departments")
 public class DepartmentController {
     private final DepartmentServiceImpl departmentService;
-    private final int departmentCount = 5;
 
     public DepartmentController(DepartmentServiceImpl departmentService) {
         this.departmentService = departmentService;
     }
 
     @RequestMapping(path = "/min-salary")
-    public Employee getMinSalaryEmployee(@RequestParam("departmentId")int departmentNumber) {
+    public Employee getMinSalaryEmployee(@RequestParam("departmentId") int departmentNumber) {
         return departmentService.getMinSalaryEmployee(departmentNumber);
     }
 
     @RequestMapping(path = "/max-salary")
-    public Employee getMaxSalaryEmployee(@RequestParam("departmentId")int departmentNumber) {
+    public Employee getMaxSalaryEmployee(@RequestParam("departmentId") int departmentNumber) {
         return departmentService.getMaxSalaryEmployee(departmentNumber);
     }
 
     @RequestMapping(path = "/all")
     public Collection getDepartmentEmployees(@RequestParam(value = "departmentId", required = false) Integer departmentNumber) {
-            return departmentService.getDepartmentEmployees(departmentNumber);
+        return departmentService.getDepartmentEmployees(departmentNumber);
     }
-
-//    @RequestMapping(path = "/all")
-//    public Collection<Collection<Employee>> getAllWithDepartmentSeparation() {
-//        return null;
-//    }
 }

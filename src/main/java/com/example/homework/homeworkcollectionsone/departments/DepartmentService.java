@@ -6,7 +6,9 @@ import java.util.Collection;
 
 public interface DepartmentService {
     Employee getMinSalaryEmployee(int departmentNumber);
+
     Employee getMaxSalaryEmployee(int departmentNumber);
+
     Collection<Employee> getDepartmentEmployees(Integer departmentNumber);
 
 }

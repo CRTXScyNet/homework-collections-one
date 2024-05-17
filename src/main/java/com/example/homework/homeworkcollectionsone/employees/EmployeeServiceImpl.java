@@ -20,7 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.maxEmployeeAmount = 15;
         for (int i = 0; i < maxEmployeeAmount; i++) {
             Employee employee = Employee.createEmployee();
-            employees.put(employee.getFullName(),employee);
+            employees.put(employee.getFullName(), employee);
         }
     }
 
@@ -72,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Map<String,Employee> getEmployeeList() {
+    public Map<String, Employee> getEmployeeList() {
         return employees;
     }
 
