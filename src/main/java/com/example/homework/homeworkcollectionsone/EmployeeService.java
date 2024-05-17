@@ -1,6 +1,7 @@
 package com.example.homework.homeworkcollectionsone;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName);
@@ -9,5 +10,5 @@ public interface EmployeeService {
 
     Employee findEmployee(String firstName, String lastName);
 
-    ArrayList<Employee> getEmployeeList();
+    Map getEmployeeList();
 }
