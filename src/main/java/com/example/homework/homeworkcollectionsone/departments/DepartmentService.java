@@ -9,6 +9,6 @@ public interface DepartmentService {
 
     Employee getMaxSalaryEmployee(int departmentNumber);
 
-    Collection<Employee> getDepartmentEmployees(Integer departmentNumber);
+    Object getDepartmentEmployees(Integer departmentNumber);
 
 }

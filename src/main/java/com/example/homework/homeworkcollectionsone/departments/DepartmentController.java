@@ -27,7 +27,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(path = "/all")
-    public Collection getDepartmentEmployees(@RequestParam(value = "departmentId", required = false) Integer departmentNumber) {
+    public Object getDepartmentEmployees(@RequestParam(value = "departmentId", required = false) Integer departmentNumber) {
         return departmentService.getDepartmentEmployees(departmentNumber);
     }
 }

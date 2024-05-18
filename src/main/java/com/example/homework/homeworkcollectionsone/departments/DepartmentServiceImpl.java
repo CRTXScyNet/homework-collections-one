@@ -5,9 +5,9 @@ import com.example.homework.homeworkcollectionsone.employees.EmployeeServiceImpl
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -34,15 +34,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Collection getDepartmentEmployees(Integer departmentNumber) {
+    public Object getDepartmentEmployees(Integer departmentNumber) {
         List<Employee> employees = employeeService.getEmployeeList()
                 .values().stream().
                 toList();
-
         if (departmentNumber == null) {
-            return employees.stream()
-                    .sorted(Comparator.comparingInt(Employee::getDepartment))
-                    .toList();
+            return employees.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
         } else {
             return employees.stream()
                     .filter(e -> e.getDepartment() == departmentNumber)
