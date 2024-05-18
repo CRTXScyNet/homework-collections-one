@@ -39,7 +39,8 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .values().stream().
                 toList();
         if (departmentNumber == null) {
-            return employees.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
+            return employees.stream()
+                    .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
         } else {
             return employees.stream()
                     .filter(e -> e.getDepartment() == departmentNumber)
