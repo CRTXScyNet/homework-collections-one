@@ -4,6 +4,7 @@ import com.example.homework.homeworkcollectionsone.exceptions.AbsentVariableExce
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeStorageIsFullException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,10 +19,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl() {
         this.employees = new HashMap<>();
         this.maxEmployeeAmount = 15;
-        for (int i = 0; i < maxEmployeeAmount; i++) {
-            Employee employee = Employee.createEmployee();
-            employees.put(employee.getFullName(), employee);
-        }
+//        for (int i = 0; i < maxEmployeeAmount-1; i++) {
+//            Employee employee = Employee.createEmployee();
+//            employees.put(employee.getFullName(), employee);
+//        }
     }
 
     @Override
@@ -29,7 +30,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
-
+        firstName = checkInput(firstName);
+        lastName = checkInput(lastName);
         Employee employee = new Employee(firstName, lastName);
         boolean employeeAlreadyExist = employees.containsKey(employee.getFullName());
         if (employeeAlreadyExist) {
@@ -48,11 +50,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
+        firstName = checkInput(firstName);
+        lastName = checkInput(lastName);
         String fullName = firstName + " " + lastName;
         boolean employeeExist = employees.containsKey(firstName + " " + lastName);
         if (!employeeExist) {
             throw new EmployeeNotFoundException();
         }
+
         Employee employee = employees.get(fullName);
         employees.remove(fullName);
         return employee;
@@ -63,6 +68,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
             throw new AbsentVariableException();
         }
+        firstName = checkInput(firstName);
+        lastName = checkInput(lastName);
         String fullName = firstName + " " + lastName;
         Employee employeeExist = employees.get(fullName);
         if (employeeExist == null) {
@@ -74,6 +81,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Map<String, Employee> getEmployeeList() {
         return employees;
+    }
+
+    @Override
+    public String checkInput(String s) {
+        String newS = StringUtils.trim(s);
+        if (!StringUtils.isAlpha(newS)) {
+            throw new AbsentVariableException();
+        }
+        String firstLetter = String.valueOf(newS.charAt(0));
+        if (!StringUtils.isAllUpperCase(firstLetter)) {
+            newS = newS.replaceFirst(firstLetter, firstLetter.toUpperCase());
+        }
+        return newS;
     }
 
 
