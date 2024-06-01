@@ -89,10 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!StringUtils.isAlpha(newS)) {
             throw new AbsentVariableException();
         }
-        String firstLetter = String.valueOf(newS.charAt(0));
-        if (!StringUtils.isAllUpperCase(firstLetter)) {
-            newS = newS.replaceFirst(firstLetter, firstLetter.toUpperCase());
-        }
+        newS = StringUtils.capitalize(newS);
         return newS;
     }
 
