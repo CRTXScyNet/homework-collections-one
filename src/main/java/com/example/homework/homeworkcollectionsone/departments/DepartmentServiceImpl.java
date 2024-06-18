@@ -40,7 +40,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Object getDepartmentEmployees(Integer id) {
+    public Object getDepartmentEmployees(int id) {
         List<Employee> employees = employeeService.getEmployeeList()
                 .values().stream().
                 toList();
