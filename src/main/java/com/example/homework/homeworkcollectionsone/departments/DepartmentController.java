@@ -1,9 +1,9 @@
 package com.example.homework.homeworkcollectionsone.departments;
 
-import com.example.homework.homeworkcollectionsone.employees.Employee;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/departments")
@@ -23,6 +23,7 @@ public class DepartmentController {
     public int getMaxSalaryEmployee(@PathVariable int id) {
         return departmentService.getMaxSalaryEmployee(id);
     }
+
     @GetMapping(path = "{id:\\d+}/sum")
     public int getSumSalaryEmployee(@PathVariable int id) {
         return departmentService.getSumSalaryEmployee(id);
@@ -32,6 +33,7 @@ public class DepartmentController {
     public Object getDepartmentEmployees(@PathVariable int id) {
         return departmentService.getDepartmentEmployees(id);
     }
+
     @GetMapping(path = "/employees")
     public Object getEmployeesGroupedByDepartment() {
         return departmentService.getEmployeesGroupedByDepartment();

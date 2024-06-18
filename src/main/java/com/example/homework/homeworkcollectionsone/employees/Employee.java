@@ -11,7 +11,8 @@ public class Employee {
     private int department;
     private int salary;
 
-    static final int maxEmployeeAmount = 10;;
+    static final int maxEmployeeAmount = 10;
+
 
     public Employee(String firstName, String lastName, int department, int salary) {
         this.firstName = firstName;

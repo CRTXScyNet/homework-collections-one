@@ -3,6 +3,7 @@ package com.example.homework.homeworkcollectionsone.departments;
 import com.example.homework.homeworkcollectionsone.employees.Employee;
 import com.example.homework.homeworkcollectionsone.employees.EmployeeServiceImpl;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundException;
+import com.example.homework.homeworkcollectionsone.exceptions.WrongDepartmentIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,6 +62,22 @@ class DepartmentServiceImplTest {
         //then
         assertThrows(
                 EmployeeNotFoundException.class,
+                () -> departmentService.getMinSalaryEmployee(2)
+        );
+    }
+
+    @Test
+    void getMinSalaryEmployeeWithWrongDivisionIdShouldThrowException() {
+        //given
+        assertNotNull(employeeService);
+
+        Map<String, Employee> employeeMap = new HashMap<>();
+
+        when(employeeService.getEmployeeList()).thenReturn(employeeMap);
+        //do
+        //then
+        assertThrows(
+                WrongDepartmentIdException.class,
                 () -> departmentService.getMinSalaryEmployee(0)
         );
     }
@@ -97,6 +114,19 @@ class DepartmentServiceImplTest {
         //then
         assertThrows(
                 EmployeeNotFoundException.class,
+                () -> departmentService.getMaxSalaryEmployee(2)
+        );
+    }
+
+    @Test
+    void getMaxSalaryEmployeeWithWrongDivisionIdShouldThrowException() {
+        //given
+        assertNotNull(employeeService);
+
+        //do
+        //then
+        assertThrows(
+                WrongDepartmentIdException.class,
                 () -> departmentService.getMaxSalaryEmployee(0)
         );
     }
@@ -120,6 +150,19 @@ class DepartmentServiceImplTest {
     }
 
     @Test
+    void getSumSalaryEmployeeWithWrongDivisionIdShouldThrowException() {
+        //given
+        assertNotNull(employeeService);
+
+        //do
+        //then
+        assertThrows(
+                WrongDepartmentIdException.class,
+                () -> departmentService.getSumSalaryEmployee(0)
+        );
+    }
+
+    @Test
     void getDepartmentEmployees() {
         //given
         assertNotNull(employeeService);
@@ -136,6 +179,19 @@ class DepartmentServiceImplTest {
                         .stream()
                         .toList(),
                 departmentService.getDepartmentEmployees(1)
+        );
+    }
+
+    @Test
+    void getDepartmentEmployeesWithWrongDivisionIdShouldThrowException() {
+        //given
+        assertNotNull(employeeService);
+
+        //do
+        //then
+        assertThrows(
+                WrongDepartmentIdException.class,
+                () -> departmentService.getDepartmentEmployees(0)
         );
     }
 

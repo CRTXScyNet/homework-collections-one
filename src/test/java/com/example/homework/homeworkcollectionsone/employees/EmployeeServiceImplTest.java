@@ -4,12 +4,10 @@ import com.example.homework.homeworkcollectionsone.exceptions.AbsentVariableExce
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeStorageIsFullException;
-import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.internal.matchers.Null;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +24,8 @@ class EmployeeServiceImplTest {
     @Test
     public void addEmployee() {
         //given
-        Map<String,Employee> employeeMap = new HashMap<>();
-        employeeMap.put(employee.getFullName(),employee);
+        Map<String, Employee> employeeMap = new HashMap<>();
+        employeeMap.put(employee.getFullName(), employee);
 
         //do
         employeeService.addEmployee(
@@ -38,7 +36,7 @@ class EmployeeServiceImplTest {
         );
 
         //then
-        assertEquals(employeeMap,employeeService.getEmployeeList());
+        assertEquals(employeeMap, employeeService.getEmployeeList());
     }
 
     @Test
@@ -89,7 +87,7 @@ class EmployeeServiceImplTest {
     @Test
     public void deleteEmployee() {
         //given
-        Map<String,Employee> employeeMap = new HashMap<>();
+        Map<String, Employee> employeeMap = new HashMap<>();
 
         //do
         employeeService.addEmployee(
@@ -101,8 +99,9 @@ class EmployeeServiceImplTest {
         employeeService.deleteEmployee(employee.getFirstName(), employee.getLastName());
 
         //then
-        assertEquals(employeeMap,employeeService.getEmployeeList());
+        assertEquals(employeeMap, employeeService.getEmployeeList());
     }
+
     @Test
     public void whenDeleteNotExistedEmployeeShouldThrowException() {
         //given
@@ -126,10 +125,11 @@ class EmployeeServiceImplTest {
 
         //do
         //then
-        assertEquals(employee,employeeService.findEmployee(employee.getFirstName(),employee.getLastName()));
+        assertEquals(employee, employeeService.findEmployee(employee.getFirstName(), employee.getLastName()));
     }
+
     @Test
-    public void whenTryToFindNotExistedEmployeeShouldThrowException(){
+    public void whenTryToFindNotExistedEmployeeShouldThrowException() {
         //given
         //do
         //then
@@ -145,7 +145,7 @@ class EmployeeServiceImplTest {
 
         //do
         //then
-assertEquals(HashMap.class,employeeService.employees.getClass());
+        assertEquals(HashMap.class, employeeService.employees.getClass());
     }
 
     //employeeExist
@@ -167,29 +167,32 @@ assertEquals(HashMap.class,employeeService.employees.getClass());
         //given
         //do
         //then
-assertThrows(AbsentVariableException.class,() -> employeeService.checkInput(s));
+        assertThrows(AbsentVariableException.class, () -> employeeService.checkInput(s));
     }
-public static Stream<Arguments> checkInputThrowsExceptionSource(){
+
+    public static Stream<Arguments> checkInputThrowsExceptionSource() {
         return Stream.of(
                 Arguments.of("al ex"),
                 Arguments.of("1lex"),
                 Arguments.of(""),
                 Arguments.of("A?ex")
         );
-}
+    }
+
     @ParameterizedTest
     @MethodSource(value = "checkInputSource")
     public void checkInput(String actual, String expected) {
         //given
         //do
         //then
-        assertEquals(expected,employeeService.checkInput(actual));
+        assertEquals(expected, employeeService.checkInput(actual));
     }
-    public static Stream<Arguments> checkInputSource(){
+
+    public static Stream<Arguments> checkInputSource() {
         return Stream.of(
-                Arguments.of("alex","Alex"),
-                Arguments.of("aLex","Alex"),
-                Arguments.of("Alex","Alex")
+                Arguments.of("alex", "Alex"),
+                Arguments.of("aLex", "Alex"),
+                Arguments.of("Alex", "Alex")
 
         );
     }
