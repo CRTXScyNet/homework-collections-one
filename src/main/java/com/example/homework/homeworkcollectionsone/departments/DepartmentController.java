@@ -1,9 +1,7 @@
 package com.example.homework.homeworkcollectionsone.departments;
 
 import com.example.homework.homeworkcollectionsone.employees.Employee;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -16,18 +14,26 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @RequestMapping(path = "/min-salary")
-    public Employee getMinSalaryEmployee(@RequestParam("departmentId") int departmentNumber) {
-        return departmentService.getMinSalaryEmployee(departmentNumber);
+    @GetMapping(path = "{id:\\d+}/min")
+    public int getMinSalaryEmployee(@PathVariable int id) {
+        return departmentService.getMinSalaryEmployee(id);
     }
 
-    @RequestMapping(path = "/max-salary")
-    public Employee getMaxSalaryEmployee(@RequestParam("departmentId") int departmentNumber) {
-        return departmentService.getMaxSalaryEmployee(departmentNumber);
+    @GetMapping(path = "{id:\\d+}/max")
+    public int getMaxSalaryEmployee(@PathVariable int id) {
+        return departmentService.getMaxSalaryEmployee(id);
+    }
+    @GetMapping(path = "{id:\\d+}/sum")
+    public int getSumSalaryEmployee(@PathVariable int id) {
+        return departmentService.getSumSalaryEmployee(id);
     }
 
-    @RequestMapping(path = "/all")
-    public Object getDepartmentEmployees(@RequestParam(value = "departmentId", required = false) Integer departmentNumber) {
-        return departmentService.getDepartmentEmployees(departmentNumber);
+    @GetMapping(path = "{id:\\d+}/employees")
+    public Object getDepartmentEmployees(@PathVariable int id) {
+        return departmentService.getDepartmentEmployees(id);
+    }
+    @GetMapping(path = "/employees")
+    public Object getEmployeesGroupedByDepartment() {
+        return departmentService.getEmployeesGroupedByDepartment();
     }
 }

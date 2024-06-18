@@ -18,33 +18,45 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Employee getMinSalaryEmployee(int departmentNumber) {
+    public int getMinSalaryEmployee(int departmentNumber) {
         return employeeService.getEmployeeList().values().stream()
                 .filter(e -> e.getDepartment() == departmentNumber)
                 .min(Comparator.comparingInt(Employee::getSalary))
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(EmployeeNotFoundException::new).getSalary();
     }
 
     @Override
-    public Employee getMaxSalaryEmployee(int departmentNumber) {
+    public int getMaxSalaryEmployee(int departmentNumber) {
         return employeeService.getEmployeeList().values().stream()
                 .filter(e -> e.getDepartment() == departmentNumber)
                 .max(Comparator.comparingInt(Employee::getSalary))
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(EmployeeNotFoundException::new).getSalary();
+    }
+
+    public int getSumSalaryEmployee(int departmentNumber) {
+        return employeeService.getEmployeeList().values().stream()
+                .filter(e -> e.getDepartment() == departmentNumber)
+                .mapToInt(Employee::getSalary).sum();
     }
 
     @Override
-    public Object getDepartmentEmployees(Integer departmentNumber) {
+    public Object getDepartmentEmployees(Integer id) {
         List<Employee> employees = employeeService.getEmployeeList()
                 .values().stream().
                 toList();
-        if (departmentNumber == null) {
-            return employees.stream()
-                    .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
-        } else {
-            return employees.stream()
-                    .filter(e -> e.getDepartment() == departmentNumber)
-                    .toList();
-        }
+        return employees.stream()
+                .filter(e -> e.getDepartment() == id)
+                .toList();
+
+    }
+
+    @Override
+    public Object getEmployeesGroupedByDepartment() {
+        List<Employee> employees = employeeService.getEmployeeList()
+                .values().stream().
+                toList();
+        return employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
+
     }
 }
