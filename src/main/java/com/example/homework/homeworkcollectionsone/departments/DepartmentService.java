@@ -5,10 +5,12 @@ import com.example.homework.homeworkcollectionsone.employees.Employee;
 import java.util.Collection;
 
 public interface DepartmentService {
-    Employee getMinSalaryEmployee(int departmentNumber);
+    int getMinSalaryEmployee(int id);
 
-    Employee getMaxSalaryEmployee(int departmentNumber);
+    int getMaxSalaryEmployee(int id);
+    int getSumSalaryEmployee(int id);
 
-    Object getDepartmentEmployees(Integer departmentNumber);
+    Object getDepartmentEmployees(int id);
+    Object getEmployeesGroupedByDepartment();
 
 }

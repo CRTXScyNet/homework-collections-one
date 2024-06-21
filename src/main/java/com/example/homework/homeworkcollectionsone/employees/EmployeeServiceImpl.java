@@ -4,40 +4,37 @@ import com.example.homework.homeworkcollectionsone.exceptions.AbsentVariableExce
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeNotFoundException;
 import com.example.homework.homeworkcollectionsone.exceptions.EmployeeStorageIsFullException;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     Map<String, Employee> employees;
-    private final int maxEmployeeAmount;
+
+    Logger log = Logger.getLogger(EmployeeServiceImpl.class.getName());
 
     public EmployeeServiceImpl() {
         this.employees = new HashMap<>();
-        this.maxEmployeeAmount = 15;
-//        for (int i = 0; i < maxEmployeeAmount-1; i++) {
-//            Employee employee = Employee.createEmployee();
-//            employees.put(employee.getFullName(), employee);
-//        }
+
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
-        if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
-            throw new AbsentVariableException();
-        }
+    public Employee addEmployee(String firstName, String lastName, int departmentId, int salary) {
         firstName = checkInput(firstName);
         lastName = checkInput(lastName);
         Employee employee = new Employee(firstName, lastName);
-        boolean employeeAlreadyExist = employees.containsKey(employee.getFullName());
-        if (employeeAlreadyExist) {
-            throw new EmployeeAlreadyAddedException();
-        }
-        if (employees.size() >= maxEmployeeAmount) {
+
+        employeeExist(employee.getFullName(), false);
+
+        if (employees.size() >= Employee.maxEmployeeAmount) {
             throw new EmployeeStorageIsFullException();
         }
 
@@ -47,17 +44,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee deleteEmployee(String firstName, String lastName) {
-        if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
-            throw new AbsentVariableException();
-        }
         firstName = checkInput(firstName);
         lastName = checkInput(lastName);
         String fullName = firstName + " " + lastName;
-        boolean employeeExist = employees.containsKey(firstName + " " + lastName);
-        if (!employeeExist) {
-            throw new EmployeeNotFoundException();
-        }
-
+        employeeExist(firstName + " " + lastName, true);
         Employee employee = employees.get(fullName);
         employees.remove(fullName);
         return employee;
@@ -65,17 +55,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
-            throw new AbsentVariableException();
-        }
         firstName = checkInput(firstName);
         lastName = checkInput(lastName);
         String fullName = firstName + " " + lastName;
-        Employee employeeExist = employees.get(fullName);
-        if (employeeExist == null) {
-            throw new EmployeeNotFoundException();
-        }
-        return employeeExist;
+        employeeExist(firstName + " " + lastName, true);
+        return employees.get(fullName);
     }
 
     @Override
@@ -84,12 +68,44 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public void employeeExist(String fullName, boolean shouldExist) {
+        boolean employeeExist = employees.containsKey(fullName);
+        if (employeeExist && !shouldExist) {
+            throw new EmployeeAlreadyAddedException();
+        }
+        if (!employeeExist && shouldExist) {
+            throw new EmployeeNotFoundException();
+        }
+    }
+
+    @Override
     public String checkInput(String s) {
         String newS = StringUtils.trim(s);
+        if (s == null || s.isBlank()) {
+            throw new AbsentVariableException();
+        }
         if (!StringUtils.isAlpha(newS)) {
             throw new AbsentVariableException();
+
         }
         newS = StringUtils.capitalize(newS.toLowerCase());
         return newS;
+    }
+
+    @Value("${soska}")
+    private String string;
+
+    @PostConstruct
+    public void init() {
+//        employees.put("Aleksandr Sorokin", new Employee("Aleksandr","Sorokin",1,500));
+//        employees.put("Misha Skoroped", new Employee("Misha","Skoroped",2,16000));
+//        employees.put("Andrey Podlecov", new Employee("Andrey","Podlecov",3,10000));
+//        employees.put("Viola Viagra", new Employee("Viola","Viagra",4,100000));
+
+//        for (int i = 0; i < Employee.maxEmployeeAmount-1; i++) {
+//            Employee employee = Employee.createEmployee();
+//            employees.put(employee.getFullName(), employee);
+//        }
+        log.info(string);
     }
 }
